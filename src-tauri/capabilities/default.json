@@ -1,0 +1,33 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "default",
+  "description": "enables the default permissions",
+  "windows": [
+    "main"
+  ],
+  "permissions": [
+    "core:default",
+    "fs:default",
+    "fs:allow-read",
+    "fs:scope",
+    {
+      "identifier": "fs:scope",
+      "allow": [
+        {
+          "path": "/home/jaykchen/**"
+        }
+      ]
+    },
+    {
+      "identifier": "fs:allow-read-text-file",
+      "allow": [
+        {
+          "path": "$AppDir/.*"
+        }
+      ]
+    }
+  ],
+  "platforms": [
+    "linux"
+  ]
+}

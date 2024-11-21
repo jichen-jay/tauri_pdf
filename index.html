@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tauri</title>
+  </head>
+
+  <body>
+    <h3>Counter: <span id="counter"></span></h3>
+    <div>
+      <button id="increment-btn">Increment</button>
+      <button id="decrement-btn">Decrement</button>
+      <button id="reset-btn">Reset</button>
+    </div>
+
+    <p>Press Ctrl+R to reload and see the state persist.</p>
+    <div class="container">
+      <input type="text" id="filePath" placeholder="Enter file path" />
+      <button id="processFile">Process File</button>
+      <div class="output-area">
+        <textarea id="result" readonly></textarea>
+      </div>
+    </div>
+    <script>
+      const { invoke } = window.__TAURI__.core;
+      const { readTextFile } = window.__TAURI__.fs;
+      const incrementBtn = document.querySelector("#increment-btn");
+      const decrementBtn = document.querySelector("#decrement-btn");
+      const resetBtn = document.querySelector("#reset-btn");
+      const counterContainer = document.querySelector("#counter");
+      const filePathInput = document.getElementById("filePath");
+      const processButton = document.getElementById("processFile");
+      const resultTextarea = document.getElementById("result");
+
+      processButton.addEventListener("click", async () => {
+        const filePath = filePathInput.value;
+
+        try {
+          let content = await readTextFile(filePath);
+          resultTextarea.value = content;
+        } catch (error) {
+          console.error("Failed to read file:", error);
+          resultTextarea.value = "Failed to read file: " + error;
+        }
+      });
+
+      document.addEventListener("DOMContentLoaded", async () => {
+        let currentCount = await invoke("get");
+        counterContainer.innerText = currentCount;
+        console.log("loaded");
+      });
+
+      incrementBtn.addEventListener("click", async () => {
+        let newCount = await invoke("increment");
+        counterContainer.innerText = newCount;
+      });
+
+      decrementBtn.addEventListener("click", async () => {
+        let newCount = await invoke("decrement");
+        counterContainer.innerText = newCount;
+      });
+
+      resetBtn.addEventListener("click", async () => {
+        let newCount = await invoke("reset");
+        counterContainer.innerText = newCount;
+      });
+    </script>
+  </body>
+  <style>
+    body {
+      font-family: sans-serif;
+    }
+    .container {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      padding: 1rem;
+    }
+    .input-area {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+    .output-area textarea {
+      width: 100%;
+      height: 20rem;
+      resize: none;
+    }
+  </style>
+</html>

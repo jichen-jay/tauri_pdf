@@ -1,0 +1,12 @@
+{
+  "name": "tauri-pdf",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "tauri": "tauri"
+  },
+  "dependencies": {
+    "@tauri-apps/plugin-fs": "^2.0.2"
+  }
+}
