@@ -6,6 +6,25 @@
     "main"
   ],
   "permissions": [
+    {
+      "identifier": "shell:allow-execute",
+      "allow": [
+        {
+          "name": "qpdf",
+          "cmd": "qpdf",
+          "args": [
+            {
+              "validator": "\\S+"
+            },
+            "--qdf",
+            {
+              "validator": "\\S+"
+            }
+          ],
+          "sidecar": false
+        }
+      ]
+    },
     "core:default",
     "fs:default",
     "fs:allow-read",
@@ -15,7 +34,11 @@
       "allow": [
         {
           "path": "/home/jaykchen/**"
+        },
+        {
+          "path": "$AppDir/.*"
         }
+
       ]
     },
     {
@@ -25,7 +48,8 @@
           "path": "$AppDir/.*"
         }
       ]
-    }
+    },
+    "shell:default"
   ],
   "platforms": [
     "linux"

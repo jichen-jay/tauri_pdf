@@ -24,7 +24,8 @@
     </div>
     <script>
       const { invoke } = window.__TAURI__.core;
-      const { readTextFile } = window.__TAURI__.fs;
+      const { readTextFile, readFile } = window.__TAURI__.fs;
+      const { Command } = window.__TAURI__.shell;
       const incrementBtn = document.querySelector("#increment-btn");
       const decrementBtn = document.querySelector("#decrement-btn");
       const resetBtn = document.querySelector("#reset-btn");
@@ -35,15 +36,26 @@
 
       processButton.addEventListener("click", async () => {
         const filePath = filePathInput.value;
+        try {
+          <!-- const txtFilePath = filePath.replace(/\.[^/.]+$/, ".txt"); -->
 
+          await readMD(filePath); // Call readMD after docling finishes successfully
+        } catch (error) {
+          console.error("Failed to process file:", error);
+          resultTextarea.value =
+            "Failed to process file or read output: " + error;
+        }
+      });
+
+      async function readMD(filePath) {
         try {
           let content = await readTextFile(filePath);
           resultTextarea.value = content;
         } catch (error) {
-          console.error("Failed to read file:", error);
-          resultTextarea.value = "Failed to read file: " + error;
+          console.error("Failed to read .md file:", error);
+          resultTextarea.value = "Failed to read .md file: " + error;
         }
-      });
+      }
 
       document.addEventListener("DOMContentLoaded", async () => {
         let currentCount = await invoke("get");
