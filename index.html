@@ -37,9 +37,20 @@
       processButton.addEventListener("click", async () => {
         const filePath = filePathInput.value;
         try {
-          <!-- const txtFilePath = filePath.replace(/\.[^/.]+$/, ".txt"); -->
+          const txtFilePath = filePath.replace(/\.[^/.]+$/, ".txt");
 
-          await readMD(filePath); // Call readMD after docling finishes successfully
+          let result = await Command.create("turndown-cli", [
+            filePath,
+            txtFilePath,
+          ]).execute();
+
+          if (result.code !== 0) {
+            throw new Error(
+              `docling exited with code ${result.code}: ${result.stderr}`
+            );
+          }
+
+          await readMD(txtFilePath); // Call readMD after docling finishes successfully
         } catch (error) {
           console.error("Failed to process file:", error);
           resultTextarea.value =

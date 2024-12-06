@@ -10,15 +10,14 @@
       "identifier": "shell:allow-execute",
       "allow": [
         {
-          "name": "qpdf",
-          "cmd": "qpdf",
+          "name": "turndown-cli",
+          "cmd": "turndown-cli",
           "args": [
             {
-              "validator": "\\S+"
+              "validator": ".+"
             },
-            "--qdf",
             {
-              "validator": "\\S+"
+              "validator": ".+"
             }
           ],
           "sidecar": false
