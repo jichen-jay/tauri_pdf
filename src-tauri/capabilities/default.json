@@ -12,14 +12,7 @@
         {
           "name": "turndown-cli",
           "cmd": "turndown-cli",
-          "args": [
-            {
-              "validator": ".+"
-            },
-            {
-              "validator": ".+"
-            }
-          ],
+          "args": true,
           "sidecar": false
         }
       ]

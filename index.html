@@ -37,7 +37,7 @@
       processButton.addEventListener("click", async () => {
         const filePath = filePathInput.value;
         try {
-          const txtFilePath = filePath.replace(/\.[^/.]+$/, ".txt");
+          const txtFilePath = filePath.replace(/\.[^/.]+$/, ".md");
 
           let result = await Command.create("turndown-cli", [
             filePath,
