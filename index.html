@@ -4,7 +4,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Tauri</title>
-    <!-- <script src = "./marked.min.js"></script> -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   </head>
 
@@ -23,6 +22,7 @@
         <textarea id="result" readonly></textarea>
       </div>
       <div id="markdown-container"></div>
+      <div id="content-container"></div>
     </div>
     <script>
       const { invoke } = window.__TAURI__.core;
@@ -39,40 +39,29 @@
       processButton.addEventListener("click", async () => {
         const filePath = filePathInput.value;
         try {
-          const txtFilePath = filePath.replace(/\.[^/.]+$/, ".md");
+          const htmlContent = await readTextFile(filePath);
 
-          let result = await Command.create("turndown-cli", [
-            filePath,
-            txtFilePath,
-          ]).execute();
-
-          if (result.code !== 0) {
-            throw new Error(
-              `docling exited with code ${result.code}: ${result.stderr}`
-            );
-          }
-
-          await readMD(txtFilePath); // Call readMD after docling finishes successfully
+          document.getElementById("content-container").innerHTML = htmlContent;
         } catch (error) {
-          console.error("Failed to process file:", error);
-          resultTextarea.value =
-            "Failed to process file or read output: " + error;
+          console.error("Failed to load HTML file:", error);
+          resultTextarea.value = "Failed to load HTML file: " + error;
         }
       });
+
       const MarkdownRenderer = {
-        target: document.getElementById('markdown-container'),
+        target: document.getElementById("markdown-container"),
         props: {
-          markdownContent: ''
-        }
+          markdownContent: "",
+        },
       };
-    
+
       async function readMD(filePath) {
         try {
           let content = await readTextFile(filePath);
           resultTextarea.value = content;
-          
+
           const htmlContent = marked.parse(content);
-          document.getElementById('markdown-container').innerHTML = htmlContent;
+          document.getElementById("markdown-container").innerHTML = htmlContent;
         } catch (error) {
           console.error("Failed to read .md file:", error);
           resultTextarea.value = "Failed to read .md file: " + error;
@@ -136,6 +125,11 @@
       background: #f4f4f4;
       padding: 1rem;
       border-radius: 4px;
+    }
+    #content-container {
+      padding: 20px;
+      margin: 0 auto;
+      max-width: 800px;
     }
   </style>
 </html>
