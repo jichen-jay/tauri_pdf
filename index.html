@@ -4,6 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Tauri</title>
+    <!-- <script src = "./marked.min.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   </head>
 
   <body>
@@ -13,7 +15,6 @@
       <button id="decrement-btn">Decrement</button>
       <button id="reset-btn">Reset</button>
     </div>
-
     <p>Press Ctrl+R to reload and see the state persist.</p>
     <div class="container">
       <input type="text" id="filePath" placeholder="Enter file path" />
@@ -21,6 +22,7 @@
       <div class="output-area">
         <textarea id="result" readonly></textarea>
       </div>
+      <div id="markdown-container"></div>
     </div>
     <script>
       const { invoke } = window.__TAURI__.core;
@@ -57,11 +59,20 @@
             "Failed to process file or read output: " + error;
         }
       });
-
+      const MarkdownRenderer = {
+        target: document.getElementById('markdown-container'),
+        props: {
+          markdownContent: ''
+        }
+      };
+    
       async function readMD(filePath) {
         try {
           let content = await readTextFile(filePath);
           resultTextarea.value = content;
+          
+          const htmlContent = marked.parse(content);
+          document.getElementById('markdown-container').innerHTML = htmlContent;
         } catch (error) {
           console.error("Failed to read .md file:", error);
           resultTextarea.value = "Failed to read .md file: " + error;
@@ -109,6 +120,22 @@
       width: 100%;
       height: 20rem;
       resize: none;
+    }
+    #markdown-container {
+      margin-top: 2rem;
+      padding: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    #markdown-container h1,
+    #markdown-container h2,
+    #markdown-container h3 {
+      margin-top: 0;
+    }
+    #markdown-container pre {
+      background: #f4f4f4;
+      padding: 1rem;
+      border-radius: 4px;
     }
   </style>
 </html>
