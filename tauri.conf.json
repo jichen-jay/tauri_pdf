@@ -10,7 +10,6 @@
     "devUrl": "http://localhost:8080"
   },
   "app": {
-    "withGlobalTauri": true,
     "windows": [
       {
         "title": "tauri-pdf",
@@ -23,13 +22,13 @@
     "security": {
       "csp": null,
       "capabilities": [
-        "default"
+        "capabilities/default.json"
       ]
     }
   },
   "bundle": {
     "active": true,
-    "targets": "all",
+    "targets": "appimage",
     "icon": [
       "icons/32x32.png",
       "icons/128x128.png",

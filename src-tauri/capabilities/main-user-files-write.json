@@ -1,0 +1,25 @@
+{
+    "identifier": "main-user-files-write",
+    "description": "Allows the `main` window access to filesystem write commands and dialog commands for user-selected files.",
+    "windows": [
+        "main"
+    ],
+    "permissions": [
+        {
+            "identifier": "core:default"
+        },
+        {
+            "identifier": "fs:allow-write-text-file",
+            "scope": {
+                "allow": [
+                    {
+                        "path": "$HOME/**"
+                    }
+                ]
+            }
+        }
+    ],
+    "platforms": [
+        "linux"
+    ]
+}

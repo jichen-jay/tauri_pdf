@@ -1,0 +1,22 @@
+{
+    "identifier": "shell-capability",
+    "description": "Allows the `main` window to execute shell commands.",
+    "windows": [
+        "main"
+    ],
+    "permissions": [
+        {
+            "identifier": "shell:allow-execute",
+            "scope": {
+                "allow": [
+                    {
+                        "name": "turndown-cli",
+                        "cmd": "turndown-cli",
+                        "args": true,
+                        "sidecar": false
+                    }
+                ]
+            }
+        }
+    ]
+}
